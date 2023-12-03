@@ -98,8 +98,16 @@ public class ChessBoard extends JFrame {
             addPiece(square, "B", f.getIsWhite());                  //	U+1F451
         }
         if(f instanceof King){
-
             addPiece(square, "king", f.getIsWhite());
+        }
+        if(f instanceof Knight){
+            addPiece(square, "K", f.getIsWhite());
+        }
+        if(f instanceof Champion){
+            addPiece(square, "C", f.getIsWhite());
+        }
+        if(f instanceof Wizard){
+            addPiece(square, "W", f.getIsWhite());
         }
     }
 
@@ -156,6 +164,9 @@ public class ChessBoard extends JFrame {
                 clickedFlag = true;
                 variantsCoords = new ArrayList<>();
                 for (Coordinates[] coords : coordinates){
+                    if(coords == null){
+                        continue;
+                    }
                     for (Coordinates coord : coords){
                         if(coord == null){
                             continue;
@@ -206,6 +217,11 @@ public class ChessBoard extends JFrame {
         b.getCell(1,1).setFigure(new Bishop(b.getCell(1,1), true, b));
 
         b.getCell(2,2).setFigure(new King(b.getCell(2,2), false, b));
+        b.getCell(3,3).setFigure(new Knight(b.getCell(3,3), true, b));
+
+        b.getCell(5,3).setFigure(new Champion(b.getCell(5,3), true, b));
+        b.getCell(7,7).setFigure(new Wizard(b.getCell(7,7), false, b));
+        b.getCell(3,3).getFigure().getMovingVariants();
         SwingUtilities.invokeLater(() -> new ChessBoard(b));
     }
 }

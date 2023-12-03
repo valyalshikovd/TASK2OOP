@@ -286,5 +286,27 @@ public abstract class Figure implements FigureInterface{
         return res;
     }
 
+    protected MovingInterface[] arbitraryMove(int x, int y){
+        Cell tmpCell = board.getCell(x, y);
+        if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
+            return  new MovingInterface[]{new Kill(this, tmpCell.getFigure(), tmpCell) , new ArbitraryMoving(this, tmpCell.getCoordinates())};
+        }
+        if (tmpCell != null && tmpCell.getFigure() == null) {
+            return new MovingInterface[]{new ArbitraryMoving(this, tmpCell.getCoordinates())};
+        }
+        return null;
+    }
+
+    protected Coordinates[] arbitraryMoveGetCoords(int x, int y){
+        Cell tmpCell = board.getCell(x, y);
+        if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
+            return   new Coordinates[]{new Coordinates(tmpCell.getCoordinates().getX(), tmpCell.getCoordinates().getY())};
+        }
+        if (tmpCell != null && tmpCell.getFigure() == null) {
+            return   new Coordinates[]{new Coordinates(tmpCell.getCoordinates().getX(), tmpCell.getCoordinates().getY())};
+        }
+        return null;
+    }
+
 
 }
