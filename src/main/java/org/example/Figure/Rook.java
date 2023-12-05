@@ -12,23 +12,28 @@ public class Rook extends Figure{
         super(cell,  isWhite, board);
     }
 
-    public MovingInterface[][] getMovingVariants() {
-        MovingInterface[][] res = new MovingInterface[4][];
-        res[0] = longMovementUp();
-        res[1] = longMovementDown();
-        res[2] = longMovementRight();
-        res[3] = longMovementLeft();
+    public MovingInterface[] getMovingVariants() {
+        MovingInterface[] res = new MovingInterface[4];
+
+        for(int i = 0; i < Cell.SIZE; i += 2){
+            res[i/2] = longMovement(i);
+        }
         return res;
+    }
+
+    @Override
+    public String getName() {
+        return "R";
     }
 
     @Override
     public Coordinates[][] getMovingVariantsOnCoords() {
         Coordinates[][] res = new Coordinates[4][];
-        res[0] = longMovementUpGetCoords();
-        res[1] = longMovementDownGetCoords();
-        res[2] = longMovementRightGetCoords();
-        res[3] = longMovementLeftGetCoords();
 
+
+        for(int i = 0; i < Cell.SIZE; i += 2){
+            res[i/2] = longMovementGetCoords(i);
+        }
         return res;
     }
 }

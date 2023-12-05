@@ -14,22 +14,26 @@ public class Bishop extends Figure{
     public Coordinates[][] getMovingVariantsOnCoords() {
         Coordinates[][] res = new Coordinates[4][];
 
-        res[0] = longMovementLeftDownGetCoords();
-        res[1] = longMovementLeftUpGetCoords();
-        res[2] = longMovementRightUpGetCoords();
-        res[3] = longMovementRightDownGetCoords();
+        for(int i = 1; i < Cell.SIZE; i += 2){
+            res[i/2] = longMovementGetCoords(i);
+        }
+
 
         return res;
     }
 
     @Override
-    public MovingInterface[][] getMovingVariants() {
-        MovingInterface[][] res = new MovingInterface[8][];
+    public MovingInterface[] getMovingVariants() {
+        MovingInterface[] res = new MovingInterface[8];
 
-        res[0] = longMovementLeftDown();
-        res[1] = longMovementLeftUp();
-        res[2] = longMovementRightUp();
-        res[3] = longMovementRightDown();
+        for(int i = 1; i < Cell.SIZE; i += 2){
+            res[i/2] = longMovement(i);
+        }
         return res;
+    }
+
+    @Override
+    public String getName() {
+        return "B";
     }
 }

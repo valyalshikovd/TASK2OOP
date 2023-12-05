@@ -3,8 +3,6 @@ package org.example.Figure;
 import org.example.Game.Board;
 import org.example.Game.Cell;
 import org.example.Game.Coordinates;
-import org.example.moving.ArbitraryMoving;
-import org.example.moving.Kill;
 import org.example.moving.MovingInterface;
 
 public class Knight extends Figure {
@@ -27,8 +25,8 @@ public class Knight extends Figure {
     }
 
     @Override
-    public MovingInterface[][] getMovingVariants() {
-        MovingInterface[][] res = new MovingInterface[8][];
+    public MovingInterface[] getMovingVariants() {
+        MovingInterface[] res = new MovingInterface[8];
         res[0] = arbitraryMove(cell.getCoordinates().getX() + 2, cell.getCoordinates().getY() + 1);
         res[1] = arbitraryMove(cell.getCoordinates().getX() + 2, cell.getCoordinates().getY() - 1);
         res[2] = arbitraryMove(cell.getCoordinates().getX() + 1, cell.getCoordinates().getY() + 2);
@@ -38,6 +36,11 @@ public class Knight extends Figure {
         res[6] = arbitraryMove(cell.getCoordinates().getX() + 1, cell.getCoordinates().getY() - 2);
         res[7] = arbitraryMove(cell.getCoordinates().getX() - 1, cell.getCoordinates().getY() - 2);
         return res;
+    }
+
+    @Override
+    public String getName() {
+        return "K";
     }
 
 }

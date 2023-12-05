@@ -7,6 +7,7 @@ import org.example.Game.Coordinates;
 public class ArbitraryMoving implements MovingInterface{
     protected FigureInterface figure;
     protected Coordinates coordinates;
+    private int size = 0;
     protected Cell cellBefore;
     public ArbitraryMoving(FigureInterface figure, Coordinates coordinates) {
         this.figure = figure;
@@ -23,6 +24,7 @@ public class ArbitraryMoving implements MovingInterface{
         figure.getCell().setFigure(null);
         figure.setCell(cell);
         cell.setFigure(figure);
+        size = 1;
         return true;
     }
 
@@ -35,4 +37,21 @@ public class ArbitraryMoving implements MovingInterface{
         figure.setCell(cellBefore);
 
     }
+
+    @Override
+    public FigureInterface getFigure() {
+        return figure;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public boolean isKilled() {
+        return false;
+    }
+
+
 }

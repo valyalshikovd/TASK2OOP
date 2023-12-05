@@ -3,9 +3,13 @@ import org.example.Figure.*;
 import org.example.Game.Board;
 import org.example.Game.Cell;
 import org.example.Game.Coordinates;
+import org.example.Game.GameState;
+import org.example.Player.Bot;
+import org.example.Player.PlayerInterface;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -18,21 +22,44 @@ public class ChessBoard extends JFrame {
     private FigureInterface movedFigure;
     private Coordinates clickedCoords;
     private List<Coordinates> variantsCoords;
+    private GameState gs;
 
-    public ChessBoard(Board b) {
-        this.board = b;
+    public ChessBoard(PlayerInterface playerInterface1, PlayerInterface playerInterface2) {
+        this.gs = new GameState(playerInterface1, playerInterface2);
+        this.board = gs.getBoard();
         this.clickedFlag = false;
         setLayout(new BorderLayout());
 
         chessBoardPanel = new JPanel(new GridLayout(12, 12));
 
         add(chessBoardPanel, BorderLayout.CENTER);
-
         createChessBoard();
+        chessBoardPanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(gs.isGameWasFinished()){
+                    return;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    gs.stepBack();
+                    resetChessBoard();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    gs.setStep();
+                    resetChessBoard();
+                }
+            }
+        });
+
 
         setSize(480, 480);
         setLocationRelativeTo(null);
+
+        chessBoardPanel.setFocusable(true);
+        chessBoardPanel.requestFocusInWindow();
         setVisible(true);
+
+
     }
 
     private void createChessBoard() {
@@ -72,10 +99,6 @@ public class ChessBoard extends JFrame {
                 chessBoardPanel.add(square);
             }
         }
-//        addCornerSquare(0, 0);
-//        addCornerSquare(0, 11);
-//        addCornerSquare(11, 0);
-//        addCornerSquare(11, 11);
     }
     private void addCornerSquare(int row, int col) {
         JPanel square = new JPanel();
@@ -85,29 +108,8 @@ public class ChessBoard extends JFrame {
     }
     private void addChessPiece(JPanel square, int row, int col) {
         FigureInterface f = board.getCell(row  - 1 , col - 1).getFigure();
-        if(f instanceof Pawn){
-            addPiece(square, "P",f.getIsWhite());
-        }
-        if(f instanceof Rook){
-            addPiece(square, "R", f.getIsWhite());
-        }
-        if(f instanceof Queen){
-            addPiece(square, "Q", f.getIsWhite());
-        }
-        if(f instanceof Bishop){
-            addPiece(square, "B", f.getIsWhite());                  //	U+1F451
-        }
-        if(f instanceof King){
-            addPiece(square, "king", f.getIsWhite());
-        }
-        if(f instanceof Knight){
-            addPiece(square, "K", f.getIsWhite());
-        }
-        if(f instanceof Champion){
-            addPiece(square, "C", f.getIsWhite());
-        }
-        if(f instanceof Wizard){
-            addPiece(square, "W", f.getIsWhite());
+        if(f != null) {
+            addPiece(square, f.getName(), f.getIsWhite());
         }
     }
 
@@ -133,16 +135,13 @@ public class ChessBoard extends JFrame {
 
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
+            if(gs.isGameWasFinished()){
+                return;
+            }
             if(clickedFlag  && board.getCell(row, col) != null){
                 boolean flag = false;
                 for(Coordinates coord : variantsCoords){
-                    System.out.println(coord.getX());
-                    System.out.println(coord.getY());
-                    System.out.println(row+1);
-                    System.out.println(col+1);
-                    System.out.println("-----------------");
                     if(coord.getX() == row && coord.getY() == col){
-                        System.out.println("rerere");
                         flag = true;
                     }
                 }
@@ -176,7 +175,6 @@ public class ChessBoard extends JFrame {
                     }
                 }
             }
-            System.out.println("Clicked on square: (" + row + ", " + col + ")");
         }
 
         @Override
@@ -208,20 +206,6 @@ public class ChessBoard extends JFrame {
     public static void main(String[] args) {
         Board b = new Board();
         b.buildBoard();
-        b.getCell(3,6).setFigure(new Pawn(b.getCell(3,6), true, b));
-
-        b.getCell(8,6).setFigure(new Rook(b.getCell(8,6), false, b));
-
-        b.getCell(8,7).setFigure(new Queen(b.getCell(8,7), false, b));
-
-        b.getCell(1,1).setFigure(new Bishop(b.getCell(1,1), true, b));
-
-        b.getCell(2,2).setFigure(new King(b.getCell(2,2), false, b));
-        b.getCell(3,3).setFigure(new Knight(b.getCell(3,3), true, b));
-
-        b.getCell(5,3).setFigure(new Champion(b.getCell(5,3), true, b));
-        b.getCell(7,7).setFigure(new Wizard(b.getCell(7,7), false, b));
-        b.getCell(3,3).getFigure().getMovingVariants();
-        SwingUtilities.invokeLater(() -> new ChessBoard(b));
+        SwingUtilities.invokeLater(() -> new ChessBoard(new Bot("Димас"), new Bot("ЫВАЫВПЫВПВЫПЫВРПАВОПВКОЕА")));
     }
 }

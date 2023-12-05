@@ -1,6 +1,6 @@
 package org.example.Game;
 
-import org.example.Exeptions.ChessException;
+
 
 public class CellFactory{
     public CellFactory() {

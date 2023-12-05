@@ -3,7 +3,7 @@ package org.example.Figure;
 import org.example.Game.Board;
 import org.example.Game.Cell;
 import org.example.Game.Coordinates;
-import org.example.moving.MovingInterface;
+import org.example.moving.*;
 
 public class Wizard extends Figure{
     public Wizard(Cell cell, boolean isWhite, Board board) {
@@ -14,40 +14,9 @@ public class Wizard extends Figure{
     public Coordinates[][] getMovingVariantsOnCoords() {
         Coordinates[][] res =  new Coordinates[12][];
 
-        if(cell.getLeftUPCell()!= null && cell.getLeftUPCell().getFigure() != null && cell.getLeftUPCell().getFigure().getIsWhite() != isWhite ){
-            res[0] = new Coordinates[]{cell.getLeftUPCell().getCoordinates()};
-
+        for(int i = 1; i < Cell.SIZE; i += 2){
+            res[i/2] = new Coordinates[]{cell.getNeighbours(i).getCoordinates()};
         }
-        if(cell.getLeftUPCell()!= null&& cell.getLeftUPCell().getFigure() == null){
-            res[0] = new Coordinates[]{cell.getLeftUPCell().getCoordinates()};
-        }
-
-        if(cell.getLeftDownCell()!= null && cell.getLeftDownCell().getFigure() != null && cell.getLeftDownCell().getFigure().getIsWhite() != isWhite ){
-            res[1] =  new Coordinates[]{cell.getLeftDownCell().getCoordinates()};
-
-        }
-        if(cell.getLeftDownCell()!= null&& cell.getLeftDownCell().getFigure() == null){
-            res[1] = new Coordinates[]{cell.getLeftDownCell().getCoordinates()};
-        }
-
-        if(cell.getRightDownCell()!= null && cell.getRightDownCell().getFigure() != null && cell.getRightDownCell().getFigure().getIsWhite() != isWhite ){
-            res[2] =  new Coordinates[]{cell.getRightDownCell().getCoordinates()};
-
-        }
-        if(cell.getRightDownCell()!= null&& cell.getRightDownCell().getFigure() == null){
-            res[2] =  new Coordinates[]{cell.getRightDownCell().getCoordinates()};
-        }
-
-
-
-        if(cell.getRightUPCell()!= null && cell.getRightUPCell().getFigure() != null && cell.getRightUPCell().getFigure().getIsWhite() != isWhite ){
-            res[3] =  new Coordinates[]{cell.getRightUPCell().getCoordinates()};
-
-        }
-        if(cell.getRightUPCell()!= null&& cell.getRightUPCell().getFigure() == null){
-            res[3] =  new Coordinates[]{cell.getRightUPCell().getCoordinates()};
-        }
-
         res[4] = arbitraryMoveGetCoords(cell.getCoordinates().getX() + 3, cell.getCoordinates().getY() + 1);
         res[5] = arbitraryMoveGetCoords(cell.getCoordinates().getX() + 3, cell.getCoordinates().getY() - 1);
         res[6] = arbitraryMoveGetCoords(cell.getCoordinates().getX() - 3, cell.getCoordinates().getY() + 1);
@@ -61,7 +30,32 @@ public class Wizard extends Figure{
     }
 
     @Override
-    public MovingInterface[][] getMovingVariants() {
-        return new MovingInterface[0][];
+    public MovingInterface[] getMovingVariants() {
+
+        MovingInterface[] res =  new MovingInterface[12];
+
+        for(int i = 1; i < Cell.SIZE; i += 2){
+            if(cell.getNeighbours(i) != null && cell.getNeighbours(i).getFigure() != null && cell.getNeighbours(i).getFigure().getIsWhite() != isWhite){
+                res[i/2] = new KillDecorator(new DefaultMoving(this, i), cell.getNeighbours(i), cell.getNeighbours(i).getFigure());
+            }
+            if(cell.getNeighbours(i) != null && cell.getNeighbours(i).getFigure() == null){
+                res[i/2] = new DefaultMoving(this, i);
+            }
+        }
+        res[4] = arbitraryMove(cell.getCoordinates().getX() + 3, cell.getCoordinates().getY() + 1);
+        res[5] = arbitraryMove(cell.getCoordinates().getX() + 3, cell.getCoordinates().getY() - 1);
+        res[6] = arbitraryMove(cell.getCoordinates().getX() - 3, cell.getCoordinates().getY() + 1);
+        res[7] = arbitraryMove(cell.getCoordinates().getX() - 3, cell.getCoordinates().getY() - 1);
+
+        res[8] = arbitraryMove(cell.getCoordinates().getX() + 1, cell.getCoordinates().getY() + 3);
+        res[9] = arbitraryMove(cell.getCoordinates().getX() - 1 , cell.getCoordinates().getY() + 3);
+        res[10] = arbitraryMove(cell.getCoordinates().getX() + 1 , cell.getCoordinates().getY() - 3);
+        res[11] = arbitraryMove(cell.getCoordinates().getX() - 1 , cell.getCoordinates().getY() - 3);
+        return res;
+    }
+
+    @Override
+    public String getName() {
+        return "W";
     }
 }
