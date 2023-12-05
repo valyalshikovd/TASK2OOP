@@ -1,16 +1,6 @@
 package org.example.Game;
-
-
-
 public class CellFactory{
-    public CellFactory() {
-
-    }
     public static Cell createSell(int x, int y)  {
-            if ((x + y) % 2 == 0) {
-                return new Cell(Color.White, new Coordinates(x, y));
-            }
-            return new Cell(Color.Black, new Coordinates(x, y));
-
+        return new Cell(new Coordinates(x, y));
     }
 }

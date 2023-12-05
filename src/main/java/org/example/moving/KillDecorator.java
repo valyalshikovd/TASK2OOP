@@ -2,14 +2,11 @@ package org.example.moving;
 
 import org.example.Figure.FigureInterface;
 import org.example.Game.Cell;
-
 public class KillDecorator implements MovingInterface{
-
     private final MovingInterface moving;
     private final Cell cell;
     private final FigureInterface killedFigure;
     private int size = 0;
-
     public KillDecorator(MovingInterface moving, Cell cell, FigureInterface killedFigure) {
         this.moving = moving;
         this.cell = cell;
@@ -29,10 +26,6 @@ public class KillDecorator implements MovingInterface{
             size++;
             return moving.moving();
         }catch (Exception e){
-            System.out.println(cell + "  - ячейка");
-            System.out.println(cell.getFigure() + "  - фигура в ячейке");
-            System.out.println(killedFigure + "  - убитая фигура");
-            System.out.println(getFigure() + "  - фигура вызвавшая метод");
             return false;
         }
     }
@@ -48,7 +41,6 @@ public class KillDecorator implements MovingInterface{
         cell.setFigure(killedFigure);
         killedFigure.setCell(cell);
     }
-
     @Override
     public FigureInterface getFigure() {
         return moving.getFigure();
@@ -58,7 +50,6 @@ public class KillDecorator implements MovingInterface{
     public int getSize() {
         return size;
     }
-
     @Override
     public boolean isKilled() {
         return true;

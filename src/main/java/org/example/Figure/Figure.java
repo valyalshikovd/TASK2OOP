@@ -2,7 +2,6 @@ package org.example.Figure;
 
 import org.example.Game.Board;
 import org.example.Game.Cell;
-import org.example.Game.Color;
 import org.example.Game.Coordinates;
 import org.example.moving.*;
 
@@ -11,7 +10,6 @@ public abstract class Figure implements FigureInterface{
     protected final boolean isWhite;
     private static final int MAX = 12;
     protected final Board board;
-
 
     public Figure(Cell cell, boolean isWhite, Board board) {
         this.cell = cell;
@@ -60,7 +58,6 @@ public abstract class Figure implements FigureInterface{
         }
         return new MovingComposite(killedFlag, res);
     }
-
     protected Coordinates[] longMovementGetCoords(int destination){
         Cell currentCell = cell.getNeighbours(destination);
         int counter = 0;
@@ -75,7 +72,6 @@ public abstract class Figure implements FigureInterface{
         }
         return res;
     }
-
     protected MovingInterface arbitraryMove(int x, int y){
         Cell tmpCell = board.getCell(x, y);
         if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
@@ -86,7 +82,6 @@ public abstract class Figure implements FigureInterface{
         }
         return null;
     }
-
     protected Coordinates[] arbitraryMoveGetCoords(int x, int y){
         Cell tmpCell = board.getCell(x, y);
         if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
@@ -97,6 +92,4 @@ public abstract class Figure implements FigureInterface{
         }
         return null;
     }
-
-
 }

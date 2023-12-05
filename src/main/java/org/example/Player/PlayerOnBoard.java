@@ -32,9 +32,6 @@ public class PlayerOnBoard extends Player {
 
             }
         });
-        //movingInterface =
-
-
         return null;
     }
 

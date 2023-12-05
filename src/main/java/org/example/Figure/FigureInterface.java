@@ -9,7 +9,8 @@ public interface FigureInterface {
     public Cell getCell();
     public void setCell(Cell cell);
     public Coordinates[][] getMovingVariantsOnCoords();
-    public MovingInterface[][] getMovingVariants();
+    public MovingInterface[] getMovingVariants();
     public boolean getIsWhite();
     public Board getBoard();
+    public String getName();
 }

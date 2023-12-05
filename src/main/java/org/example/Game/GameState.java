@@ -2,19 +2,16 @@ package org.example.Game;
 
 import org.example.Player.PlayerInterface;
 import org.example.moving.MovingInterface;
-
 import java.util.Stack;
 
 public class GameState {
-    private PlayerInterface whitePlayerInterface1;
-    private PlayerInterface blackPlayerInterface2;
-    private Board board;
-
+    private final PlayerInterface whitePlayerInterface1;
+    private final PlayerInterface blackPlayerInterface2;
+    private final Board board;
     private boolean gameWasFinished = false;
-
-    private Stack<MovingInterface> movingInterfaceStack;
+    private final Stack<MovingInterface> movingInterfaceStack;
+    private final Stack<MovingInterface> rollbackMovingInterfaceStack;
     private PlayerInterface movedPlayer;
-
     public GameState(PlayerInterface playerInterface1, PlayerInterface playerInterface2) {
         this.whitePlayerInterface1 = playerInterface1;
         this.blackPlayerInterface2 = playerInterface2;
@@ -22,11 +19,17 @@ public class GameState {
         this.whitePlayerInterface1.setFigures(board.getWhiteFiguresNonSafety());
         this.blackPlayerInterface2.setFigures(board.getBlackFiguresNonSafety());
         movingInterfaceStack = new Stack<>();
+        rollbackMovingInterfaceStack = new Stack<>();
         movedPlayer = playerInterface1;
     }
-
     public void setStep() {
         if(gameWasFinished){
+            return;
+        }
+        if(!rollbackMovingInterfaceStack.empty()){
+            MovingInterface moving = rollbackMovingInterfaceStack.pop();
+            moving.moving();
+            movingInterfaceStack.add(moving);
             return;
         }
         MovingInterface move = movedPlayer.getStep();
@@ -46,19 +49,20 @@ public class GameState {
             gameWasFinished = true;
         }
     }
-
     public void stepBack() {
-        movingInterfaceStack.pop().reverse();
+        if(movingInterfaceStack.empty()){
+            return;
+        }
+        MovingInterface moving = movingInterfaceStack.pop();
+        moving.reverse();
+        rollbackMovingInterfaceStack.add(moving);
     }
-
     public Board getBoard() {
         return board;
     }
-
     public PlayerInterface getMovedPlayer() {
         return movedPlayer;
     }
-
     public boolean isGameWasFinished() {
         return gameWasFinished;
     }

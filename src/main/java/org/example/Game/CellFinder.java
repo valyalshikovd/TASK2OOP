@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CellFinder {
-
-    private List<Cell> listCells = new ArrayList<>();
-    private Cell findedCell;
-
+    private final List<Cell> listCells = new ArrayList<>();
+    private final Cell findedCell;
     public CellFinder(Cell cellFromWhichSearch, int x, int y) {
         findedCell = findNullProtected(cellFromWhichSearch, x, y);
     }
-
     public Cell findNullProtected(Cell cellFromWhichSearch, int x, int y) {
-
         if (cellFromWhichSearch == null) {
             return null;
         }

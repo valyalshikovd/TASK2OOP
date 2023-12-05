@@ -8,15 +8,11 @@ import java.util.List;
 
 public class Board {
     private static final int SIZE = 10;
-
     private Cell rootCell;
     private List<FigureInterface> whiteFigures = new ArrayList<>();
     private List<FigureInterface> blackFigures = new ArrayList<>();
-
     private King whiteKing;
     private King blackKing;
-
-
     public Board() {
         buildBoard();
     }
@@ -29,7 +25,7 @@ public class Board {
 
     private void createFigures() {
         whiteKing = new King(getCell(0, 5), true, this);
-        whiteFigures = new ArrayList(Arrays.asList(new Wizard(getCell(-1, -1), true, this),
+        whiteFigures = new ArrayList<>(Arrays.asList(new Wizard(getCell(-1, -1), true, this),
                 new Champion(getCell(0, 0), true, this),
                 new Rook(getCell(0, 1), true, this),
                 new Knight(getCell(0, 2), true, this),
@@ -43,10 +39,9 @@ public class Board {
                 new Wizard(getCell(-1, 10), true, this)));
         for (int i = 0; i < SIZE; i++) {
             new Pawn(getCell(1, i), true, this);
-
         }
         blackKing = new King(getCell(9, 5), false, this);
-        blackFigures = new ArrayList(Arrays.asList(
+        blackFigures = new ArrayList<>(Arrays.asList(
                 new Wizard(getCell(10, -1), false, this),
                 new Champion(getCell(9, 0), false, this),
                 new Rook(getCell(9, 1), false, this),
@@ -77,7 +72,6 @@ public class Board {
         rootCell = current[0];
         for (int i = 1; i < SIZE; i++) {
             Cell[] res = createBoardRow(i);
-
             for (int j = 0; j < SIZE; j++) {
                 if (checkValideCoords(j + 1)) {
                     current[j].setNeighbours(Cell.RIGHT_DOWN, res[j + 1]);
@@ -93,60 +87,27 @@ public class Board {
             current = res;
         }
     }
-
     private void creatingWitchCells() {
-
-
-        //getCell(0,0).setLeftUPCell(CellFactory.createSell(-1, -1));
-        //getCell(0,0).getLeftUPCell().setRightDownCell(getCell(0,0));
-
         getCell(0, 0).setNeighbours(Cell.LEFT_UP, CellFactory.createSell(-1, -1));
         getCell(0, 0).getNeighbours(Cell.LEFT_UP).setNeighbours(Cell.RIGHT_DOWN, getCell(0, 0));
-
-
         getCell(9, 0).setNeighbours(Cell.LEFT_DOWN, CellFactory.createSell(10, -1));
         getCell(9, 0).getNeighbours(Cell.LEFT_DOWN).setNeighbours(Cell.RIGHT_UP, getCell(9, 0));
-
-        //  getCell(9,0).setLeftDownCell(CellFactory.createSell(10, -1));
-        // getCell(9,0).getLeftDownCell().setRightUPCell(getCell(9,0));
-
         getCell(0, 9).setNeighbours(Cell.RIGHT_UP, CellFactory.createSell(-1, 10));
         getCell(0, 9).getNeighbours(Cell.RIGHT_UP).setNeighbours(Cell.LEFT_DOWN, getCell(0, 9));
-
-        // getCell(0,9).setRightUPCell(CellFactory.createSell(-1, 10));
-        // getCell(0,9).getRightUPCell().setLeftDownCell(getCell(0,9));
-
-
         getCell(9, 9).setNeighbours(Cell.RIGHT_DOWN, CellFactory.createSell(10, 10));
         getCell(9, 9).getNeighbours(Cell.RIGHT_DOWN).setNeighbours(Cell.LEFT_UP, getCell(9, 9));
-
-
-        //getCell(9,9).setRightDownCell(CellFactory.createSell(10, 10));
-        //getCell(9,9).getRightDownCell().setLeftUPCell(getCell(9,9));
-
     }
-
     private Cell[] createBoardRow(int x) {
         Cell[] resList = new Cell[SIZE];
         for (int i = 0; i < SIZE; i++) {
             resList[i] = CellFactory.createSell(x, i);
             if (i - 1 >= 0) {
-
                 resList[i - 1].setNeighbours(2, resList[i]);
                 resList[i].setNeighbours(6, resList[i - 1]);
-
-
-                //  resList[i - 1].setRightCell(resList[i]);
-                //  resList[i].setLeftCell(resList[i - 1]);
             }
         }
         return resList;
     }
-
-    public Cell getRootCell() {
-        return rootCell;
-    }
-
     public List<FigureInterface> getWhiteFiguresNonSafety() {
         return whiteFigures;
     }
@@ -162,23 +123,15 @@ public class Board {
     public void addToBlackFigures(FigureInterface figure) {
         blackFigures.add(figure);
     }
-
     public void removeToWhiteFigures(FigureInterface figure) {
-        System.out.println("фигура удалена");
         whiteFigures.remove(figure);
-        System.out.println("Количество белых фигур " + whiteFigures.size());
     }
-
     public void removeToBlackFigures(FigureInterface figure) {
-        System.out.println("фигура удалена");
         blackFigures.remove(figure);
-        System.out.println("Количество черных фигур " + blackFigures.size());
     }
-
     public King getWhiteKing() {
         return whiteKing;
     }
-
     public King getBlackKing() {
         return blackKing;
     }

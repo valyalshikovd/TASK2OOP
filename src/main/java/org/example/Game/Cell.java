@@ -12,56 +12,40 @@ public class Cell {
     public static final int LEFT = 6;
     public static final int LEFT_UP = 7;
     public static final int SIZE = 8;
-    private final Color color;
     private FigureInterface figure = null;
     private final Coordinates coordinates;
     private final Cell[] neighbours = new Cell[8];
-
-
-    public Cell(Color color, Coordinates coordinates) {
-        this.color = color;
+    public Cell( Coordinates coordinates) {
         this.coordinates = coordinates;
     }
-
-    public Color getColor() {
-        return color;
-    }
-
     public FigureInterface getFigure() {
         return figure;
     }
-
     public void setFigure(FigureInterface figure) {
         this.figure = figure;
     }
-
     public Coordinates getCoordinates() {
         return coordinates;
     }
-
     public Cell[] noSafetyGetNeighbours() {
         return neighbours;
     }
-
     public Cell getNeighbours(int index) {
         if(index < 0 || index > 7){
             return null;
         }
         return neighbours[index];
     }
-
     public void setNeighbours(int index, Cell value) {
         if(index < 0 || index > 7){
             return;
         }
          neighbours[index] = value;
     }
-
     @Override
     public String toString() {
         return "Cell{" +
-                "color=" + color +
-                ", figure=" + figure +
+                " figure=" + figure +
                 ", coordinates=" + coordinates +
                 '}';
     }

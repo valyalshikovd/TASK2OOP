@@ -1,32 +1,19 @@
 package org.example.Player;
 
-import org.example.Figure.Figure;
 import org.example.Figure.FigureInterface;
-import org.example.Game.Board;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player implements PlayerInterface {
-
-
     protected List<FigureInterface> figures;
     protected String name;
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    public Player(String name) {
-        this.name = name;
-    }
-
-
-
+    public Player(String name) { this.name = name; }
     public List<FigureInterface> getFigures() {
         return new ArrayList<>(figures);
     }

@@ -6,32 +6,28 @@ import org.example.Game.Coordinates;
 import org.example.Game.GameState;
 import org.example.Player.Bot;
 import org.example.Player.PlayerInterface;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoard extends JFrame {
-    private JPanel chessBoardPanel;
-    private Board board;
+    private final JPanel chessBoardPanel;
+    private final Board board;
     private boolean clickedFlag;
     private FigureInterface movedFigure;
     private Coordinates clickedCoords;
     private List<Coordinates> variantsCoords;
-    private GameState gs;
+    private final GameState gs;
 
     public ChessBoard(PlayerInterface playerInterface1, PlayerInterface playerInterface2) {
         this.gs = new GameState(playerInterface1, playerInterface2);
         this.board = gs.getBoard();
         this.clickedFlag = false;
         setLayout(new BorderLayout());
-
         chessBoardPanel = new JPanel(new GridLayout(12, 12));
-
         add(chessBoardPanel, BorderLayout.CENTER);
         createChessBoard();
         chessBoardPanel.addKeyListener(new KeyAdapter() {
@@ -50,25 +46,17 @@ public class ChessBoard extends JFrame {
                 }
             }
         });
-
-
         setSize(480, 480);
         setLocationRelativeTo(null);
-
         chessBoardPanel.setFocusable(true);
         chessBoardPanel.requestFocusInWindow();
         setVisible(true);
-
-
     }
-
     private void createChessBoard() {
         Color lightSquareColor = new Color(255, 206, 158);
         Color darkSquareColor = new Color(209, 139, 71);
-
         for (int row = 0; row < 12; row++) {
             for (int col = 0 ; col < 12; col++) {
-
                 if( (row == 11
                     || row == 0
                     || col == 0
@@ -80,20 +68,16 @@ public class ChessBoard extends JFrame {
                                 )){
                     JPanel square = new JPanel();
                     square.setPreferredSize(new Dimension(40, 40));
-
                     chessBoardPanel.add(square);
                     continue;
                 }
-
                 JPanel square = new JPanel();
                 square.setPreferredSize(new Dimension(40, 40));
-
                 if ((row + col) % 2 == 0) {
                     square.setBackground(lightSquareColor);
                 } else {
                     square.setBackground(darkSquareColor);
                 }
-
                 square.addMouseListener(new ChessBoardClickListener(row - 1, col - 1));
                 addChessPiece(square, row, col);
                 chessBoardPanel.add(square);
@@ -112,7 +96,6 @@ public class ChessBoard extends JFrame {
             addPiece(square, f.getName(), f.getIsWhite());
         }
     }
-
     private void addPiece(JPanel square, String piece, boolean isWhite) {
         JLabel label = new JLabel(piece, SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -123,16 +106,13 @@ public class ChessBoard extends JFrame {
         }
         square.add(label);
     }
-
     private class ChessBoardClickListener implements java.awt.event.MouseListener {
-        private int row;
-        private int col;
-
+        private final int row;
+        private final int col;
         public ChessBoardClickListener(int row, int col) {
             this.row = row;
             this.col = col;
         }
-
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
             if(gs.isGameWasFinished()){
@@ -140,9 +120,10 @@ public class ChessBoard extends JFrame {
             }
             if(clickedFlag  && board.getCell(row, col) != null){
                 boolean flag = false;
-                for(Coordinates coord : variantsCoords){
-                    if(coord.getX() == row && coord.getY() == col){
+                for(Coordinates coordinates : variantsCoords){
+                    if (coordinates.getX() == row && coordinates.getY() == col) {
                         flag = true;
+                        break;
                     }
                 }
                 if(!flag){
@@ -176,19 +157,15 @@ public class ChessBoard extends JFrame {
                 }
             }
         }
-
         @Override
         public void mousePressed(java.awt.event.MouseEvent e) {
         }
-
         @Override
         public void mouseReleased(java.awt.event.MouseEvent e) {
         }
-
         @Override
         public void mouseEntered(java.awt.event.MouseEvent e) {
         }
-
         @Override
         public void mouseExited(java.awt.event.MouseEvent e) {
         }

@@ -31,11 +31,9 @@ public class ArbitraryMoving implements MovingInterface{
     @Override
     public void reverse() {
         Cell cell = figure.getBoard().getCell(coordinates.getX(), coordinates.getY());
-
         cell.setFigure(null);
         cellBefore.setFigure(figure);
         figure.setCell(cellBefore);
-
     }
 
     @Override
@@ -52,6 +50,4 @@ public class ArbitraryMoving implements MovingInterface{
     public boolean isKilled() {
         return false;
     }
-
-
 }

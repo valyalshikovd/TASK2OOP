@@ -13,7 +13,6 @@ public class Wizard extends Figure{
     @Override
     public Coordinates[][] getMovingVariantsOnCoords() {
         Coordinates[][] res =  new Coordinates[12][];
-
         for(int i = 1; i < Cell.SIZE; i += 2){
             res[i/2] = new Coordinates[]{cell.getNeighbours(i).getCoordinates()};
         }
@@ -31,9 +30,7 @@ public class Wizard extends Figure{
 
     @Override
     public MovingInterface[] getMovingVariants() {
-
         MovingInterface[] res =  new MovingInterface[12];
-
         for(int i = 1; i < Cell.SIZE; i += 2){
             if(cell.getNeighbours(i) != null && cell.getNeighbours(i).getFigure() != null && cell.getNeighbours(i).getFigure().getIsWhite() != isWhite){
                 res[i/2] = new KillDecorator(new DefaultMoving(this, i), cell.getNeighbours(i), cell.getNeighbours(i).getFigure());
@@ -53,7 +50,6 @@ public class Wizard extends Figure{
         res[11] = arbitraryMove(cell.getCoordinates().getX() - 1 , cell.getCoordinates().getY() - 3);
         return res;
     }
-
     @Override
     public String getName() {
         return "W";
