@@ -8,31 +8,30 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class PlayerOnBoard extends Player {
-
-
     private List<Consumer<MovingInterface>> observers = new ArrayList<>();
 
-    private final ChessBoard board;
+    private ChessBoard board;
     private MovingInterface actualMove;
-
     private boolean actual;
 
 
-    public PlayerOnBoard(String name, ChessBoard board) {
+    public PlayerOnBoard(String name) {
         super(name);
-        this.board = board;
     }
 
     @Override
-    public MovingInterface getStep() {
-        MovingInterface movingInterface = null;
-        observers.add(new Consumer<MovingInterface>() {
-            @Override
-            public void accept(MovingInterface movingInterface) {
+    public MovingInterface getStep() throws InterruptedException {
+        while(board.getClickedMoving() == null){
+            Thread.sleep(3000);
+            System.out.println("Ожидание");
+        }
+        MovingInterface movingInterface = board.getClickedMoving();
+        board.setClickedMovingNull();
+        return movingInterface;
+    }
 
-            }
-        });
-        return null;
+    public void setBoard(ChessBoard board){
+        this.board = board;
     }
 
     @Override
@@ -56,4 +55,5 @@ public class PlayerOnBoard extends Player {
     private void notifyObservers() {
         observers.forEach(observer -> observer.accept(actualMove));
     }
+
 }

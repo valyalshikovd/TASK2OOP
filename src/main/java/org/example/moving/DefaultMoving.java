@@ -1,10 +1,11 @@
 package org.example.moving;
 import org.example.Figure.FigureInterface;
+import org.example.Game.Cell;
 
 public class DefaultMoving extends Moving{
     private final int destination;
-    public DefaultMoving(FigureInterface figure, int destination ) {
-        super(figure);
+    public DefaultMoving(FigureInterface figure, int destination, Cell currCell ) {
+        super(figure, currCell);
         this.destination = destination;
     }
     @Override

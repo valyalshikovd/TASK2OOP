@@ -24,12 +24,4 @@ public class Queen extends Figure{
         return "Q";
     }
 
-    @Override
-    public Coordinates[][] getMovingVariantsOnCoords() {
-        Coordinates[][] res = new Coordinates[SIZE][];
-        for(int i = 0; i < SIZE; i++){
-            res[i] = longMovementGetCoords(i);
-        }
-        return res;
-    }
 }

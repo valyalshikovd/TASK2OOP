@@ -1,10 +1,20 @@
 package org.example.Game;
 
+import org.example.ChessBoard;
 import org.example.Player.PlayerInterface;
 import org.example.moving.MovingInterface;
 import java.util.Stack;
 
-public class GameState {
+public class GameState{
+    public boolean isWaitFlag() {
+        return waitFlag;
+    }
+
+    public void setWaitFlag(boolean waitFlag) {
+        this.waitFlag = waitFlag;
+    }
+
+    private boolean waitFlag = false;
     private final PlayerInterface whitePlayerInterface1;
     private final PlayerInterface blackPlayerInterface2;
     private final Board board;
@@ -12,7 +22,8 @@ public class GameState {
     private final Stack<MovingInterface> movingInterfaceStack;
     private final Stack<MovingInterface> rollbackMovingInterfaceStack;
     private PlayerInterface movedPlayer;
-    public GameState(PlayerInterface playerInterface1, PlayerInterface playerInterface2) {
+    private ChessBoard chessBoard;
+    public GameState(PlayerInterface playerInterface1, PlayerInterface playerInterface2)  {
         this.whitePlayerInterface1 = playerInterface1;
         this.blackPlayerInterface2 = playerInterface2;
         this.board = new Board();
@@ -22,7 +33,12 @@ public class GameState {
         rollbackMovingInterfaceStack = new Stack<>();
         movedPlayer = playerInterface1;
     }
-    public void setStep() {
+
+    public void setChessBoard(ChessBoard chessBoard) {
+        this.chessBoard = chessBoard;
+    }
+
+    public void setStep() throws InterruptedException {
         if(gameWasFinished){
             return;
         }
@@ -31,6 +47,9 @@ public class GameState {
             moving.moving();
             movingInterfaceStack.add(moving);
             return;
+        }
+        if(movedPlayer.isPlayer()){
+            getBoard().setReadingMode(true);
         }
         MovingInterface move = movedPlayer.getStep();
         movingInterfaceStack.add(move);
@@ -65,5 +84,13 @@ public class GameState {
     }
     public boolean isGameWasFinished() {
         return gameWasFinished;
+    }
+
+    public PlayerInterface getWhitePlayerInterface1() {
+        return whitePlayerInterface1;
+    }
+
+    public PlayerInterface getBlackPlayerInterface2() {
+        return blackPlayerInterface2;
     }
 }

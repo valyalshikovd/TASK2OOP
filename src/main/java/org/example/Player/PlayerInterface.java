@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PlayerInterface {
 
-    public MovingInterface getStep();
+    public MovingInterface getStep() throws InterruptedException;
     public void setName(String name);
     public String getName();
     public void setFigures(List<FigureInterface> figures);

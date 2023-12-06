@@ -2,7 +2,6 @@ package org.example.Figure;
 
 import org.example.Game.Board;
 import org.example.Game.Cell;
-import org.example.Game.Coordinates;
 import org.example.moving.*;
 
 public abstract class Figure implements FigureInterface{
@@ -46,32 +45,19 @@ public abstract class Figure implements FigureInterface{
         Cell currentCell = cell.getNeighbours(destination);
         int counter = 0;
         boolean killedFlag = false;
-        MovingInterface[] res = new MovingInterface[MAX];
+        MovingInterface[] res = new MovingInterface[MAX ];
         while (currentCell != null && currentCell.getFigure() == null){
-            res[counter] = new DefaultMoving(this, destination);
+            res[counter] = new DefaultMoving(this, destination, currentCell);
             currentCell = currentCell.getNeighbours(destination);
             counter++;
         }
         if(currentCell != null && currentCell.getFigure().getIsWhite() != isWhite){
             killedFlag = true;
-            res[counter] = new KillDecorator(new DefaultMoving(this, destination), currentCell, currentCell.getFigure());
+            res[counter] = new KillDecorator(new DefaultMoving(this, destination, currentCell), currentCell, currentCell.getFigure());
         }
         return new MovingComposite(killedFlag, res);
     }
-    protected Coordinates[] longMovementGetCoords(int destination){
-        Cell currentCell = cell.getNeighbours(destination);
-        int counter = 0;
-        Coordinates[] res = new Coordinates[MAX];
-        while (currentCell != null && currentCell.getFigure() == null){
-            res[counter] = currentCell.getCoordinates();
-            currentCell = currentCell.getNeighbours(destination);
-            counter++;
-        }
-        if(currentCell != null && currentCell.getFigure().getIsWhite() != isWhite){
-            res[counter]  = currentCell.getCoordinates();
-        }
-        return res;
-    }
+
     protected MovingInterface arbitraryMove(int x, int y){
         Cell tmpCell = board.getCell(x, y);
         if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
@@ -79,16 +65,6 @@ public abstract class Figure implements FigureInterface{
         }
         if (tmpCell != null && tmpCell.getFigure() == null) {
             return new MovingComposite(false, new ArbitraryMoving(this, tmpCell.getCoordinates()));
-        }
-        return null;
-    }
-    protected Coordinates[] arbitraryMoveGetCoords(int x, int y){
-        Cell tmpCell = board.getCell(x, y);
-        if (tmpCell != null && tmpCell.getFigure() != null && tmpCell.getFigure().getIsWhite() != isWhite) {
-            return   new Coordinates[]{new Coordinates(tmpCell.getCoordinates().getX(), tmpCell.getCoordinates().getY())};
-        }
-        if (tmpCell != null && tmpCell.getFigure() == null) {
-            return   new Coordinates[]{new Coordinates(tmpCell.getCoordinates().getX(), tmpCell.getCoordinates().getY())};
         }
         return null;
     }

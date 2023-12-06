@@ -1,16 +1,17 @@
 package org.example;
 import org.example.Figure.*;
-import org.example.Game.Board;
-import org.example.Game.Cell;
-import org.example.Game.Coordinates;
-import org.example.Game.GameState;
+import org.example.Game.*;
 import org.example.Player.Bot;
 import org.example.Player.PlayerInterface;
+import org.example.Player.PlayerOnBoard;
+import org.example.moving.MovingInterface;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChessBoard extends JFrame {
@@ -20,10 +21,20 @@ public class ChessBoard extends JFrame {
     private FigureInterface movedFigure;
     private Coordinates clickedCoords;
     private List<Coordinates> variantsCoords;
-    private final GameState gs;
+    private MovingInterface clickedMoving;
+    private GameState gs;
 
-    public ChessBoard(PlayerInterface playerInterface1, PlayerInterface playerInterface2) {
-        this.gs = new GameState(playerInterface1, playerInterface2);
+    public ChessBoard(GameState gs) {
+        this.gs =gs;
+
+
+        if(gs.getWhitePlayerInterface1().isPlayer()){
+            ((PlayerOnBoard) gs.getWhitePlayerInterface1()).setBoard(this);
+        }
+        if(gs.getBlackPlayerInterface2().isPlayer()){
+            ((PlayerOnBoard) gs.getBlackPlayerInterface2()).setBoard(this);
+        }
+
         this.board = gs.getBoard();
         this.clickedFlag = false;
         setLayout(new BorderLayout());
@@ -37,11 +48,23 @@ public class ChessBoard extends JFrame {
                     return;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                  //  gs.setWaitFlag(true);
                     gs.stepBack();
                     resetChessBoard();
                 }
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    gs.setWaitFlag(true);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_2) {
+                    gs.setWaitFlag(false);
+                }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    gs.setStep();
+                    try {
+                      //  gs.setWaitFlag(true);
+                        gs.setStep();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     resetChessBoard();
                 }
             }
@@ -140,22 +163,24 @@ public class ChessBoard extends JFrame {
             }else{
                 movedFigure = board.getCell(row, col).getFigure();
                 clickedCoords = movedFigure.getCell().getCoordinates();
-                Coordinates[][] coordinates = movedFigure.getMovingVariantsOnCoords();
+                MovingInterface[] coordinates = movedFigure.getMovingVariants();
                 clickedFlag = true;
                 variantsCoords = new ArrayList<>();
-                for (Coordinates[] coords : coordinates){
-                    if(coords == null){
+                for (MovingInterface moving : coordinates){
+                    if(moving == null){
                         continue;
                     }
-                    for (Coordinates coord : coords){
+                    for (Coordinates coord : moving.getCoordinates()){
                         if(coord == null){
                             continue;
                         }
                         variantsCoords.add(coord);
+                        clickedMoving = moving;
                         highlightSquare(coord.getX(), coord.getY());
                     }
                 }
             }
+            gs.setWaitFlag(false);
         }
         @Override
         public void mousePressed(java.awt.event.MouseEvent e) {
@@ -173,16 +198,16 @@ public class ChessBoard extends JFrame {
     private void highlightSquare(int row, int col) {
         ((JPanel) chessBoardPanel.getComponent(( row + 1 ) * 12 + (col + 1))).setBackground(Color.GREEN);
     }
-    private void resetChessBoard() {
+    public void resetChessBoard() {
         chessBoardPanel.removeAll();
         createChessBoard();
         chessBoardPanel.revalidate();
         chessBoardPanel.repaint();
     }
-
-    public static void main(String[] args) {
-        Board b = new Board();
-        b.buildBoard();
-        SwingUtilities.invokeLater(() -> new ChessBoard(new Bot("Димас"), new Bot("ЫВАЫВПЫВПВЫПЫВРПАВОПВКОЕА")));
+    public MovingInterface getClickedMoving() {
+        return clickedMoving;
+    }
+    public void setClickedMovingNull() {
+        clickedMoving = null;
     }
 }

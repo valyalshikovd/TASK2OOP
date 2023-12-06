@@ -1,13 +1,37 @@
 package org.example.moving;
 
 import org.example.Figure.FigureInterface;
+import org.example.Game.Coordinates;
+
 import java.util.Arrays;
 
 public class MovingComposite implements MovingInterface{
     private final MovingInterface[] movingInterfaces;
+    private Coordinates[] coordinates;
     private final boolean isKilled;
     public MovingComposite(boolean isKilled, MovingInterface... movingInterfaces) {
         this.movingInterfaces = movingInterfaces;
+        int counter = 0;
+        for(MovingInterface movingInterface : movingInterfaces){
+            if(movingInterface != null){
+                counter += movingInterface.getCoordinates().length;
+            }
+        }
+        coordinates = new Coordinates[counter];
+        for(int i = 0; i < movingInterfaces.length; i ++){
+            if(movingInterfaces[i] == null){
+                continue;
+            }
+            Coordinates[] tmpCoordinates = movingInterfaces[i].getCoordinates();
+            if(tmpCoordinates.length > 1){
+                for (int j = 0; j < tmpCoordinates.length; j++) {
+                    coordinates[i] = tmpCoordinates[j];
+                    i++;
+                }
+                continue;
+            }
+            coordinates[i] = tmpCoordinates[0];
+        }
         this.isKilled = isKilled;
     }
     @Override
@@ -46,6 +70,12 @@ public class MovingComposite implements MovingInterface{
 
         return isKilled;
     }
+
+    @Override
+    public Coordinates[] getCoordinates() {
+        return coordinates;
+    }
+
     @Override
     public String toString() {
         return "MovingComposite{" +

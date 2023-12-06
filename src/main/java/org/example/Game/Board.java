@@ -13,6 +13,7 @@ public class Board {
     private List<FigureInterface> blackFigures = new ArrayList<>();
     private King whiteKing;
     private King blackKing;
+    private boolean readingMode = false;
     public Board() {
         buildBoard();
     }
@@ -134,5 +135,8 @@ public class Board {
     }
     public King getBlackKing() {
         return blackKing;
+    }
+    public void setReadingMode(boolean readingMode){
+        this.readingMode = readingMode;
     }
 }

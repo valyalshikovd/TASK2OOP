@@ -50,4 +50,9 @@ public class ArbitraryMoving implements MovingInterface{
     public boolean isKilled() {
         return false;
     }
+
+    @Override
+    public Coordinates[] getCoordinates() {
+        return new Coordinates[]{coordinates};
+    }
 }

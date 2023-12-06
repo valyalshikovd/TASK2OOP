@@ -2,6 +2,8 @@ package org.example.moving;
 
 import org.example.Figure.FigureInterface;
 import org.example.Game.Cell;
+import org.example.Game.Coordinates;
+
 public class KillDecorator implements MovingInterface{
     private final MovingInterface moving;
     private final Cell cell;
@@ -53,5 +55,10 @@ public class KillDecorator implements MovingInterface{
     @Override
     public boolean isKilled() {
         return true;
+    }
+
+    @Override
+    public Coordinates[] getCoordinates() {
+        return moving.getCoordinates();
     }
 }
