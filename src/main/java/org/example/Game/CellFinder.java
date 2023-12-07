@@ -26,7 +26,6 @@ public class CellFinder {
         }
         return null;
     }
-
     public Cell getFindedCell() {
         return findedCell;
     }

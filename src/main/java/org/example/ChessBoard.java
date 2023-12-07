@@ -1,17 +1,13 @@
 package org.example;
 import org.example.Figure.*;
 import org.example.Game.*;
-import org.example.Player.Bot;
-import org.example.Player.PlayerInterface;
 import org.example.Player.PlayerOnBoard;
 import org.example.moving.MovingInterface;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChessBoard extends JFrame {
@@ -26,8 +22,6 @@ public class ChessBoard extends JFrame {
 
     public ChessBoard(GameState gs) {
         this.gs =gs;
-
-
         if(gs.getWhitePlayerInterface1().isPlayer()){
             ((PlayerOnBoard) gs.getWhitePlayerInterface1()).setBoard(this);
         }
@@ -48,19 +42,11 @@ public class ChessBoard extends JFrame {
                     return;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                  //  gs.setWaitFlag(true);
                     gs.stepBack();
                     resetChessBoard();
                 }
-                if (e.getKeyCode() == KeyEvent.VK_1) {
-                    gs.setWaitFlag(true);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_2) {
-                    gs.setWaitFlag(false);
-                }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     try {
-                      //  gs.setWaitFlag(true);
                         gs.setStep();
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
@@ -80,15 +66,7 @@ public class ChessBoard extends JFrame {
         Color darkSquareColor = new Color(209, 139, 71);
         for (int row = 0; row < 12; row++) {
             for (int col = 0 ; col < 12; col++) {
-                if( (row == 11
-                    || row == 0
-                    || col == 0
-                    || col == 11) &&
-                        !((row == 0 && col == 0)
-                                ||(row == 11 && col == 0)
-                                ||(row == 0 && col == 11)
-                                ||(row == 11 && col == 11)
-                                )){
+                if( isWizardSells(row, col)){
                     JPanel square = new JPanel();
                     square.setPreferredSize(new Dimension(40, 40));
                     chessBoardPanel.add(square);
@@ -106,12 +84,6 @@ public class ChessBoard extends JFrame {
                 chessBoardPanel.add(square);
             }
         }
-    }
-    private void addCornerSquare(int row, int col) {
-        JPanel square = new JPanel();
-        square.setPreferredSize(new Dimension(40, 40));
-        square.setBackground(Color.LIGHT_GRAY);
-        chessBoardPanel.add(square, row * 12 + col);
     }
     private void addChessPiece(JPanel square, int row, int col) {
         FigureInterface f = board.getCell(row  - 1 , col - 1).getFigure();
@@ -180,7 +152,6 @@ public class ChessBoard extends JFrame {
                     }
                 }
             }
-            gs.setWaitFlag(false);
         }
         @Override
         public void mousePressed(java.awt.event.MouseEvent e) {
@@ -197,6 +168,16 @@ public class ChessBoard extends JFrame {
     }
     private void highlightSquare(int row, int col) {
         ((JPanel) chessBoardPanel.getComponent(( row + 1 ) * 12 + (col + 1))).setBackground(Color.GREEN);
+    }
+    private boolean isWizardSells(int row, int col){
+        return (row == 11 || row == 0 || col == 0 || col == 11) && !((row == 0 && col == 0) ||(row == 11 && col == 0) ||(row == 0 && col == 11) ||(row == 11 && col == 11));
+    }
+    private void setStep(){
+        try {
+            gs.setStep();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
     public void resetChessBoard() {
         chessBoardPanel.removeAll();

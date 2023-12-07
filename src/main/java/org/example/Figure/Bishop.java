@@ -2,7 +2,6 @@ package org.example.Figure;
 
 import org.example.Game.Board;
 import org.example.Game.Cell;
-import org.example.Game.Coordinates;
 import org.example.moving.MovingInterface;
 
 public class Bishop extends Figure{
@@ -17,7 +16,6 @@ public class Bishop extends Figure{
         }
         return res;
     }
-
     @Override
     public String getName() {
         return "B";

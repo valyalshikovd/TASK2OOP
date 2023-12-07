@@ -25,10 +25,6 @@ public class Bot  extends Player{
         return randomMove();
     }
     @Override
-    public void addInfoFromBoard(MovingInterface movingInterface) {
-        return;
-    }
-    @Override
     public boolean isPlayer() {
         return false;
     }

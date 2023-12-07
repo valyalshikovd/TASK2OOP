@@ -1,7 +1,6 @@
 package org.example.Game;
 
 import org.example.Figure.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,17 +12,14 @@ public class Board {
     private List<FigureInterface> blackFigures = new ArrayList<>();
     private King whiteKing;
     private King blackKing;
-    private boolean readingMode = false;
     public Board() {
         buildBoard();
     }
-
     public void buildBoard() {
         creatingCellsOnBoard();
         creatingWitchCells();
         createFigures();
     }
-
     private void createFigures() {
         whiteKing = new King(getCell(0, 5), true, this);
         whiteFigures = new ArrayList<>(Arrays.asList(new Wizard(getCell(-1, -1), true, this),
@@ -59,15 +55,12 @@ public class Board {
             new Pawn(getCell(8, i), false, this);
         }
     }
-
     public Cell getCell(int x, int y) {
         return new CellFinder(rootCell, x, y).getFindedCell();
     }
-
     private boolean checkValideCoords(int i) {
         return i < SIZE && i >= 0;
     }
-
     private void creatingCellsOnBoard() {
         Cell[] current = createBoardRow(0);
         rootCell = current[0];
@@ -103,8 +96,8 @@ public class Board {
         for (int i = 0; i < SIZE; i++) {
             resList[i] = CellFactory.createSell(x, i);
             if (i - 1 >= 0) {
-                resList[i - 1].setNeighbours(2, resList[i]);
-                resList[i].setNeighbours(6, resList[i - 1]);
+                resList[i - 1].setNeighbours(Cell.RIGHT, resList[i]);
+                resList[i].setNeighbours(Cell.LEFT, resList[i - 1]);
             }
         }
         return resList;
@@ -112,15 +105,12 @@ public class Board {
     public List<FigureInterface> getWhiteFiguresNonSafety() {
         return whiteFigures;
     }
-
     public List<FigureInterface> getBlackFiguresNonSafety() {
         return blackFigures;
     }
-
     public void addToWhiteFigures(FigureInterface figure) {
         whiteFigures.add(figure);
     }
-
     public void addToBlackFigures(FigureInterface figure) {
         blackFigures.add(figure);
     }
@@ -135,8 +125,5 @@ public class Board {
     }
     public King getBlackKing() {
         return blackKing;
-    }
-    public void setReadingMode(boolean readingMode){
-        this.readingMode = readingMode;
     }
 }

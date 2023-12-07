@@ -2,7 +2,6 @@ package org.example.Figure;
 
 import org.example.Game.Board;
 import org.example.Game.Cell;
-import org.example.Game.Coordinates;
 import org.example.moving.MovingInterface;
 
 import static org.example.Game.Cell.SIZE;

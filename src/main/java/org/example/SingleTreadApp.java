@@ -16,7 +16,6 @@ public class SingleTreadApp {
         SwingUtilities.invokeLater(() -> {
             frame = new ChessBoard(gs);
         });
-        gs.setChessBoard(frame);
     }
 
     public static void main(String[] args) {

@@ -27,7 +27,6 @@ public class ArbitraryMoving implements MovingInterface{
         size = 1;
         return true;
     }
-
     @Override
     public void reverse() {
         Cell cell = figure.getBoard().getCell(coordinates.getX(), coordinates.getY());
@@ -35,7 +34,6 @@ public class ArbitraryMoving implements MovingInterface{
         cellBefore.setFigure(figure);
         figure.setCell(cellBefore);
     }
-
     @Override
     public FigureInterface getFigure() {
         return figure;

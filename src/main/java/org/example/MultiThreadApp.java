@@ -17,7 +17,6 @@ public class MultiThreadApp {
         SwingUtilities.invokeLater(() -> {
             frame = new ChessBoard(gs);
         });
-        gs.setChessBoard(frame);
 
         Thread appThread = new Thread(() -> {
             while (true) {

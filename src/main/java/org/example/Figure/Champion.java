@@ -2,7 +2,6 @@ package org.example.Figure;
 
 import org.example.Game.Board;
 import org.example.Game.Cell;
-import org.example.Game.Coordinates;
 import org.example.moving.*;
 import static org.example.Game.Cell.SIZE;
 
@@ -14,12 +13,7 @@ public class Champion extends Figure{
     public MovingInterface[] getMovingVariants() {
         MovingInterface[] res =  new MovingInterface[12];
         for (int i = 0; i < SIZE; i += 2){
-            if(cell.getNeighbours(i)!= null && cell.getNeighbours(i).getFigure() != null && cell.getNeighbours(i).getFigure().getIsWhite() != isWhite ){
-                res[i / 2] = new KillDecorator(new DefaultMoving(this, i,cell.getNeighbours(i)),cell,cell.getNeighbours(i).getFigure()) ;
-            }
-            if(cell.getNeighbours(i)!= null&& cell.getNeighbours(i).getFigure() == null){
-                res[i / 2] = new DefaultMoving(this, i,cell.getNeighbours(i));
-            }
+            res[i/2] = createMovingInterface(i);
         }
         res[4] = arbitraryMove(cell.getCoordinates().getX() + 2, cell.getCoordinates().getY() + 2);
         res[5] = arbitraryMove(cell.getCoordinates().getX() - 2, cell.getCoordinates().getY() - 2);
@@ -31,7 +25,6 @@ public class Champion extends Figure{
         res[11] = arbitraryMove(cell.getCoordinates().getX() , cell.getCoordinates().getY() + 2);
         return res;
     }
-
     @Override
     public String getName() {
         return "CH";

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class MovingComposite implements MovingInterface{
     private final MovingInterface[] movingInterfaces;
-    private Coordinates[] coordinates;
+    private final Coordinates[] coordinates;
     private final boolean isKilled;
     public MovingComposite(boolean isKilled, MovingInterface... movingInterfaces) {
         this.movingInterfaces = movingInterfaces;

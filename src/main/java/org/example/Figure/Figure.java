@@ -21,17 +21,14 @@ public abstract class Figure implements FigureInterface{
             board.addToBlackFigures(this);
         }
     }
-
     @Override
     public boolean getIsWhite() {
         return isWhite;
     }
-
     @Override
     public Cell getCell() {
         return cell;
     }
-
     @Override
     public void setCell(Cell cell) {
         this.cell = cell;
@@ -65,6 +62,23 @@ public abstract class Figure implements FigureInterface{
         }
         if (tmpCell != null && tmpCell.getFigure() == null) {
             return new MovingComposite(false, new ArbitraryMoving(this, tmpCell.getCoordinates()));
+        }
+        return null;
+    }
+    protected MovingInterface createMovingInterface(int destination){
+        MovingInterface movingInterface = createKillDecorator(destination);
+        if(movingInterface != null) { return movingInterface;}
+        return createDefaultMoving(destination);
+    }
+    protected KillDecorator createKillDecorator(int destination){
+        if(cell.getNeighbours(destination) != null && cell.getNeighbours(destination).getFigure() != null && cell.getNeighbours(destination).getFigure().getIsWhite() != isWhite){
+            return new KillDecorator(new DefaultMoving(this, destination,cell.getNeighbours(destination)), cell.getNeighbours(destination), cell.getNeighbours(destination).getFigure());
+        }
+        return null;
+    }
+    protected DefaultMoving createDefaultMoving(int destination){
+        if(cell.getNeighbours(destination) != null && cell.getNeighbours(destination).getFigure() == null){
+            return new DefaultMoving(this, destination,cell.getNeighbours(destination));
         }
         return null;
     }

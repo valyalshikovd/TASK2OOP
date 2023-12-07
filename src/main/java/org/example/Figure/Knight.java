@@ -11,9 +11,6 @@ public class Knight extends Figure {
     public Knight(Cell cell, boolean isWhite, Board board) {
         super(cell, isWhite, board);
     }
-
-
-
     @Override
     public MovingInterface[] getMovingVariants() {
         MovingInterface[] res = new MovingInterface[SIZE];

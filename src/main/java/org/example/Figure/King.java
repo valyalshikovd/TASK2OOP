@@ -17,12 +17,7 @@ public class King extends Figure {
     public MovingInterface[] getMovingVariants() {
         MovingInterface[] res = new MovingInterface[SIZE];
         for(int i = 0; i < SIZE; i ++ ){
-            if(cell.getNeighbours(i)!= null && cell.getNeighbours(i).getFigure() != null && cell.getNeighbours(i).getFigure().getIsWhite() != isWhite ){
-                res[i] = new KillDecorator(new DefaultMoving(this, i, cell.getNeighbours(i)), cell.getNeighbours(i), cell.getNeighbours(i).getFigure());
-            }
-            if(cell.getNeighbours(i) != null && cell.getNeighbours(i).getFigure() == null){
-                res[i] = new DefaultMoving(this, i, cell.getNeighbours(i));
-            }
+            res[i] = createMovingInterface(i);
         }
         return res;
     }
